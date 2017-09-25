@@ -2,10 +2,12 @@
   "annotations": {
     "list": []
   },
+  "editMode": false,
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
   "hideControls": false,
+  "id": 2,
   "links": [],
   "rows": [
     {
@@ -20,7 +22,7 @@
           "datasource": null,
           "fill": 1,
           "id": 1,
-          "interval": ">30s",
+          "interval": "2m",
           "legend": {
             "alignAsTable": false,
             "avg": false,
@@ -74,7 +76,7 @@
               "measurement": "cpu_usage_total",
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "SELECT derivative(mean(\"value\"),1s)  / 10000000 FROM \"cpu_usage_per_cpu\" WHERE container_name !~ /\\// AND $timeFilter GROUP BY time([[interval]]),machine,container_name,instance",
+              "query": "SELECT derivative(mean(\"value\"),[[interval]])  / ([[__interval_ms]]*10000) FROM \"cpu_usage_per_cpu\" WHERE container_name !~ /\\// AND $timeFilter GROUP BY time([[interval]]),machine,container_name,instance",
               "rawQuery": true,
               "refId": "A",
               "resultFormat": "time_series",
@@ -429,7 +431,7 @@
           "datasource": null,
           "fill": 1,
           "id": 4,
-          "interval": ">30s",
+          "interval": "1m",
           "legend": {
             "avg": false,
             "current": false,
@@ -485,6 +487,8 @@
               "measurement": "rx_bytes",
               "orderByTime": "ASC",
               "policy": "default",
+              "query": "SELECT non_negative_derivative(mean(\"value\"), [[interval]])/([[__interval_ms]]/1000) FROM \"rx_bytes\" WHERE $timeFilter GROUP BY time($interval), \"machine\", \"container_name\" fill(null)",
+              "rawQuery": true,
               "refId": "A",
               "resultFormat": "time_series",
               "select": [
@@ -541,6 +545,8 @@
               "measurement": "tx_bytes",
               "orderByTime": "ASC",
               "policy": "default",
+              "query": "SELECT non_negative_derivative(mean(\"value\"), [[interval]])/([[__interval_ms]]/1000) FROM \"tx_bytes\" WHERE $timeFilter GROUP BY time($interval), \"machine\", \"container_name\" fill(null)",
+              "rawQuery": true,
               "refId": "B",
               "resultFormat": "time_series",
               "select": [
@@ -648,5 +654,5 @@
   },
   "timezone": "browser",
   "title": "Containers",
-  "version": 2
+  "version": 4
 }
