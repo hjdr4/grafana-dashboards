@@ -346,8 +346,7 @@
               "measurement": "fs_usage",
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "SELECT mean(\"value\") FROM \"fs_usage\" WHERE \"container_name\" = '/' AND \"device\" = '/dev/mapper/debian-var' AND $timeFilter GROUP BY time($interval), \"device\", \"machine\" fill(previous)",
-              "rawQuery": true,
+              "query": "SELECT mean(\"value\") FROM \"fs_usage\" WHERE \"container_name\" = '/' AND \"device\" =~ /\/dev/ AND $timeFilter GROUP BY time($interval), \"device\", \"machine\" fill(previous)",              "rawQuery": true,
               "refId": "A",
               "resultFormat": "time_series",
               "select": [
